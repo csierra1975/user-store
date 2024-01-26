@@ -7,6 +7,10 @@ const productSchema = new mongoose.Schema({
         required: [true, 'Name is required'],
         unique: true
     },
+    available: {
+        type: Boolean,
+        default: true
+    },
     price: {
         type: Number,
         default: 0
@@ -26,4 +30,15 @@ const productSchema = new mongoose.Schema({
     }
 })
 
-export const ProdcutModel = mongoose.model('Product', productSchema)
+// aqui podemos configurar como convertir el model a JSON
+productSchema.set('toJSON', {
+    virtuals: true, // añade el Id,
+    versionKey: false, // no muestra la versión
+    transform: function(doc, ret, options) { 
+        delete ret._id // le decimos que no muestre el _id
+
+        return ret
+    }
+})
+
+export const ProductModel = mongoose.model('Product', productSchema)

@@ -29,4 +29,15 @@ const userSchema = new mongoose.Schema({
     }
 })
 
+// aqui podemos configurar como convertir el model a JSON
+userSchema.set('toJSON', {
+    virtuals: true, // añade el Id,
+    versionKey: false, // no muestra la versión
+    transform: function(doc, ret, options) { 
+        delete ret._id // le decimos que no muestre el _id
+        delete ret.password
+        return ret
+    }
+})
+
 export const UserModel = mongoose.model('User', userSchema)
